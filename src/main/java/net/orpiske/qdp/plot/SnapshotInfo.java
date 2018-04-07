@@ -5,7 +5,7 @@ import java.time.Instant;
 /**
  * Represents a single line in one of the Quiver snapshot files after processing
  */
-public class SnapshotInfo {
+public class SnapshotInfo implements Comparable<SnapshotInfo> {
     private Instant timestamp;
     private long count;
     private double rate;
@@ -50,5 +50,10 @@ public class SnapshotInfo {
 
     public void setRss(double rss) {
         this.rss = rss;
+    }
+
+    @Override
+    public int compareTo(SnapshotInfo snapshotInfo) {
+        return this.getTimestamp().compareTo(snapshotInfo.getTimestamp());
     }
 }
