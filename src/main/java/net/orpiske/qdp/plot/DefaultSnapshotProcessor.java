@@ -3,7 +3,11 @@ package net.orpiske.qdp.plot;
 import java.time.Instant;
 
 public class DefaultSnapshotProcessor implements SnapshotProcessor {
-    private SnapshotData snapshotData;
+    private SnapshotData snapshotData = new SnapshotData();
+
+    public SnapshotData getSnapshotData() {
+        return snapshotData;
+    }
 
     /*
         This is a snipped of how Quiver does the calculation
@@ -23,20 +27,20 @@ public class DefaultSnapshotProcessor implements SnapshotProcessor {
         long convertedTimestamp = Long.parseLong(timestamp);
         snapshotInfo.setTimestamp(Instant.ofEpochMilli(convertedTimestamp));
 
-        int convertedPeriod = Integer.parseInt(period);
+        double convertedPeriod = Double.parseDouble(period);
         long convertedCount = Long.parseLong(count);
         snapshotInfo.setCount(convertedCount);
 
-        long convertedPeriodCount = Long.parseLong(periodCount);
-        double rate = convertedPeriodCount / (convertedPeriod / 1000);
+        double convertedPeriodCount = Double.parseDouble(periodCount);
+        double rate = convertedPeriodCount / (convertedPeriod / 1000.0d);
         snapshotInfo.setRate(rate);
 
         double convertedPeriodCpuTime = Double.parseDouble(periodCpuTime);
-        double cpu = (convertedPeriodCpuTime / convertedPeriod) * 100;
+        double cpu = (convertedPeriodCpuTime / convertedPeriod) * 100.0d;
         snapshotInfo.setCpu(cpu);
 
         double convertedRss = Double.parseDouble(rss);
-        snapshotInfo.setRss(convertedRss / (1000 * 1024));
+        snapshotInfo.setRss(convertedRss / (1000.0d * 1024.0d));
 
         snapshotData.add(snapshotInfo);
     }
