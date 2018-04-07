@@ -2,8 +2,26 @@ package net.orpiske.qdp.plot;
 
 import java.time.Instant;
 
+/**
+ * A default processor for quiver snapshot data
+ */
 public class DefaultSnapshotProcessor implements SnapshotProcessor {
     private SnapshotData snapshotData = new SnapshotData();
+
+    /**
+     * Default constructor
+     */
+    public DefaultSnapshotProcessor() {
+    }
+
+    /**
+     * Constructor
+     * @see SnapshotData#setStrict(boolean)
+     * @param strict
+     */
+    public DefaultSnapshotProcessor(boolean strict) {
+        snapshotData.setStrict(strict);
+    }
 
     public SnapshotData getSnapshotData() {
         return snapshotData;

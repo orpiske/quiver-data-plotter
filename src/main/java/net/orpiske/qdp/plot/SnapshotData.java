@@ -24,7 +24,7 @@ import java.util.function.DoubleConsumer;
 import java.util.stream.Collectors;
 
 /**
- * A container for the collected rate information
+ * A container for the collected quiver snapshot information
  */
 @SuppressWarnings("unused")
 public class SnapshotData {
@@ -34,6 +34,25 @@ public class SnapshotData {
     private SummaryStatistics rssStatistics;
     private long errorCount;
     private long skipCount = 0;
+    private boolean strict = true;
+
+    public boolean isStrict() {
+        return strict;
+    }
+
+    /**
+     * Allows control on how strict it is regarding zeros on the data set. Having zeros on the
+     * data set may render some of the calculations invalid (ie.: the Geometric mean). The code
+     * enforces strict mathematical correctness by default, but it can lead to some situations
+     * where the geometric mean for rate, CPU and RSS is zero. Setting strict to false disables
+     * this behavior.
+     * As a result, it will also change the minimal value returned for each of the parameters
+     *
+     * @param strict set to false to disable strict mathematical correctness
+     */
+    public void setStrict(boolean strict) {
+        this.strict = strict;
+    }
 
     public void add(SnapshotInfo rateInfo) {
         snapshotInfos.add(rateInfo);
@@ -50,7 +69,16 @@ public class SnapshotData {
     }
 
     private void processRateValues(DoubleConsumer rateValue) {
-        snapshotInfos.stream().mapToDouble(SnapshotInfo::getRate).forEach(rateValue);
+        if (strict) {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getRate)
+                    .forEach(rateValue);
+        }
+        else {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getRate)
+                    .filter(value -> value > 0)
+                    .forEach(rateValue);
+        }
+
     }
 
     public List<Double> getCpuValues() {
@@ -58,7 +86,15 @@ public class SnapshotData {
     }
 
     private void processCpuValues(DoubleConsumer cpuValue) {
-        snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu).forEach(cpuValue);
+        if (strict) {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu)
+                    .forEach(cpuValue);
+        }
+        else {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu)
+                    .filter(value -> value > 0)
+                    .forEach(cpuValue);
+        }
     }
 
     public List<Double> getRssValues() {
@@ -66,7 +102,16 @@ public class SnapshotData {
     }
 
     private void processRssValues(DoubleConsumer rssValue) {
-        snapshotInfos.stream().mapToDouble(SnapshotInfo::getRss).forEach(rssValue);
+        if (strict) {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getRss)
+                    .forEach(rssValue);
+
+        }
+        else {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getRss)
+                    .filter(value -> value > 0)
+                    .forEach(rssValue);
+        }
     }
 
     private void prepareRateStatistics() {
@@ -189,4 +234,6 @@ public class SnapshotData {
     public void setSkipCount(long skipCount) {
         this.skipCount = skipCount;
     }
+
+
 }
