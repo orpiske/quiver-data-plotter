@@ -53,6 +53,17 @@ public class SnapshotInfo implements Comparable<SnapshotInfo> {
     }
 
     @Override
+    public String toString() {
+        return "SnapshotInfo{" +
+                "timestamp=" + timestamp +
+                ", count=" + count +
+                ", rate=" + rate +
+                ", cpu=" + cpu +
+                ", rss=" + rss +
+                '}';
+    }
+
+    @Override
     public int compareTo(SnapshotInfo snapshotInfo) {
         return this.getTimestamp().compareTo(snapshotInfo.getTimestamp());
     }
