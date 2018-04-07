@@ -32,13 +32,11 @@ public class SnapshotReader {
 
         try {
             fileStream = new FileInputStream(filename);
-            gzipStream= new GZIPInputStream(fileStream);
 
-            in = new InputStreamReader(gzipStream);
+            in = new InputStreamReader(fileStream);
 
             Iterable<CSVRecord> records = CSVFormat.RFC4180
                     .withCommentMarker('#')
-                    .withFirstRecordAsHeader()
                     .withRecordSeparator(',')
                     .withQuote('"')
                     .withQuoteMode(QuoteMode.NON_NUMERIC)
@@ -51,7 +49,6 @@ public class SnapshotReader {
         }
         finally {
             IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(gzipStream);
             IOUtils.closeQuietly(fileStream);
         }
     }
