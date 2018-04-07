@@ -20,7 +20,7 @@ package net.orpiske.qdp.plot;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import java.util.*;
-import java.util.function.LongConsumer;
+import java.util.function.DoubleConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +38,6 @@ public class SnapshotData
         snapshotInfos.add(rateInfo);
     }
 
-
     public List<Date> getRatePeriods()
     {
         final List<Date> list = new ArrayList<>(snapshotInfos.size());
@@ -46,14 +45,34 @@ public class SnapshotData
         return list;
     }
 
-    public List<Long> getRateValues()
+    public List<Double> getRateValues()
     {
-        return snapshotInfos.stream().mapToLong(SnapshotInfo::getCount).boxed().collect(Collectors.toList());
+        return snapshotInfos.stream().mapToDouble(SnapshotInfo::getRate).boxed().collect(Collectors.toList());
     }
 
-    private void processRateValues(LongConsumer rateValue)
+    private void processRateValues(DoubleConsumer rateValue)
     {
-        snapshotInfos.stream().mapToLong(SnapshotInfo::getCount).forEach(rateValue);
+        snapshotInfos.stream().mapToDouble(SnapshotInfo::getRate).forEach(rateValue);
+    }
+
+    public List<Double> getCpuValues()
+    {
+        return snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu).boxed().collect(Collectors.toList());
+    }
+
+    private void processCpuValues(DoubleConsumer cpuValue)
+    {
+        snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu).forEach(cpuValue);
+    }
+
+    public List<Double> getRssValues()
+    {
+        return snapshotInfos.stream().mapToDouble(SnapshotInfo::getRss).boxed().collect(Collectors.toList());
+    }
+
+    private void processRssValues(DoubleConsumer rssValue)
+    {
+        snapshotInfos.stream().mapToDouble(SnapshotInfo::getRss).forEach(rssValue);
     }
 
     private void prepareStatistics()
