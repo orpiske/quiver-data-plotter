@@ -42,7 +42,7 @@ public class SnapshotReader {
 
             for (CSVRecord record : records) {
                 processor.process(record.get(0), record.get(1), record.get(2), record.get(3), record.get(4),
-                        record.get(5), record.get(6), record.get(1));
+                        record.get(5), record.get(6), record.get(7));
             }
         }
         finally {
