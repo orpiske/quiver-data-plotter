@@ -26,97 +26,151 @@ import java.util.stream.Collectors;
 /**
  * A container for the collected rate information
  */
-public class SnapshotData
-{
+@SuppressWarnings("unused")
+public class SnapshotData {
     private Set<SnapshotInfo> snapshotInfos = new TreeSet<SnapshotInfo>();
-    private SummaryStatistics statistics;
+    private SummaryStatistics rateStatistics;
+    private SummaryStatistics cpuStatistics;
+    private SummaryStatistics rssStatistics;
     private long errorCount;
     private long skipCount = 0;
 
-    public void add(SnapshotInfo rateInfo)
-    {
+    public void add(SnapshotInfo rateInfo) {
         snapshotInfos.add(rateInfo);
     }
 
-    public List<Date> getRatePeriods()
-    {
+    public List<Date> getRatePeriods() {
         final List<Date> list = new ArrayList<>(snapshotInfos.size());
         snapshotInfos.forEach(item -> list.add(Date.from(item.getTimestamp())));
         return list;
     }
 
-    public List<Double> getRateValues()
-    {
+    public List<Double> getRateValues() {
         return snapshotInfos.stream().mapToDouble(SnapshotInfo::getRate).boxed().collect(Collectors.toList());
     }
 
-    private void processRateValues(DoubleConsumer rateValue)
-    {
+    private void processRateValues(DoubleConsumer rateValue) {
         snapshotInfos.stream().mapToDouble(SnapshotInfo::getRate).forEach(rateValue);
     }
 
-    public List<Double> getCpuValues()
-    {
+    public List<Double> getCpuValues() {
         return snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu).boxed().collect(Collectors.toList());
     }
 
-    private void processCpuValues(DoubleConsumer cpuValue)
-    {
+    private void processCpuValues(DoubleConsumer cpuValue) {
         snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu).forEach(cpuValue);
     }
 
-    public List<Double> getRssValues()
-    {
+    public List<Double> getRssValues() {
         return snapshotInfos.stream().mapToDouble(SnapshotInfo::getRss).boxed().collect(Collectors.toList());
     }
 
-    private void processRssValues(DoubleConsumer rssValue)
-    {
+    private void processRssValues(DoubleConsumer rssValue) {
         snapshotInfos.stream().mapToDouble(SnapshotInfo::getRss).forEach(rssValue);
     }
 
-    private void prepareStatistics()
-    {
-        if (statistics == null)
-        {
+    private void prepareRateStatistics() {
+        if (rateStatistics == null) {
             // Use Summary Statistics because the data set might be too large
             // and we don't want to abuse memory usage
-            statistics = new SummaryStatistics();
-            processRateValues(statistics::addValue);
+            rateStatistics = new SummaryStatistics();
+            processRateValues(rateStatistics::addValue);
+        }
+    }
+
+    public double getRateGeometricMean() {
+        prepareRateStatistics();
+
+        return rateStatistics.getGeometricMean();
+    }
+
+    public double getRateMax() {
+        prepareRateStatistics();
+
+        return rateStatistics.getMax();
+    }
+
+    public double getRateMin() {
+        prepareRateStatistics();
+
+        return rateStatistics.getMin();
+    }
+
+    public double getRateStandardDeviation() {
+        prepareRateStatistics();
+
+        return rateStatistics.getStandardDeviation();
+    }
+
+    private void prepareCpuStatistics() {
+        if (cpuStatistics == null) {
+            // Use Summary Statistics because the data set might be too large
+            // and we don't want to abuse memory usage
+            cpuStatistics = new SummaryStatistics();
+            processCpuValues(cpuStatistics::addValue);
         }
     }
 
 
-    public double getGeometricMean()
-    {
-        prepareStatistics();
+    public double getCpuGeometricMean() {
+        prepareCpuStatistics();
 
-        return statistics.getGeometricMean();
+        return cpuStatistics.getGeometricMean();
     }
 
-    public double getMax()
-    {
-        prepareStatistics();
+    public double getCpuMax() {
+        prepareCpuStatistics();
 
-        return statistics.getMax();
+        return cpuStatistics.getMax();
     }
 
-    public double getMin()
-    {
-        prepareStatistics();
+    public double getCpuMin() {
+        prepareCpuStatistics();
 
-        return statistics.getMin();
+        return cpuStatistics.getMin();
     }
 
-    public double getStandardDeviation()
-    {
-        prepareStatistics();
+    public double getCpuStandardDeviation() {
+        prepareCpuStatistics();
 
-        return statistics.getStandardDeviation();
+        return cpuStatistics.getStandardDeviation();
     }
 
-    public int getNumberOfSamples()
-    {
+    private void prepareRssStatistics() {
+        if (rssStatistics == null) {
+            // Use Summary Statistics because the data set might be too large
+            // and we don't want to abuse memory usage
+            rssStatistics = new SummaryStatistics();
+            processRssValues(rssStatistics::addValue);
+        }
+    }
+
+
+    public double getRssGeometricMean() {
+        prepareRssStatistics();
+
+        return rssStatistics.getGeometricMean();
+    }
+
+    public double getRssMax() {
+        prepareRssStatistics();
+
+        return rssStatistics.getMax();
+    }
+
+    public double getRssMin() {
+        prepareRssStatistics();
+
+        return rssStatistics.getMin();
+    }
+
+    public double getRssStandardDeviation() {
+        prepareRssStatistics();
+
+        return rssStatistics.getStandardDeviation();
+    }
+
+    public int getNumberOfSamples() {
         return snapshotInfos.size();
     }
 
