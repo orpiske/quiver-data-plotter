@@ -1,0 +1,39 @@
+{
+  "config": {
+    "transaction_size": 0, 
+    "channel_mode": "active", 
+    "operation": "receive", 
+    "id": "quiver-c5af34f2", 
+    "url": "amqp://localhost:5672/quiver.performance.queue", 
+    "connection_mode": "client", 
+    "credit_window": 1000, 
+    "messages": 1000000, 
+    "body_size": 100, 
+    "output_dir": "/mnt/quiver", 
+    "timeout": 10, 
+    "impl": "rhea"
+  }, 
+  "results": {
+    "message_count": 1000000, 
+    "latency_average": 43538.800638, 
+    "first_send_time": null, 
+    "last_send_time": null, 
+    "first_receive_time": 1523029106129, 
+    "latency_nines": [
+      1487, 
+      452985, 
+      453086, 
+      453096, 
+      453097
+    ], 
+    "last_receive_time": 1523029141433, 
+    "latency_quartiles": [
+      10, 
+      17, 
+      21, 
+      28, 
+      453097
+    ], 
+    "message_rate": 28325
+  }
+}
