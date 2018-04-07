@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.zip.GZIPInputStream;
 
 
 public class SnapshotReader {
@@ -25,7 +24,6 @@ public class SnapshotReader {
 
     public void read(final String filename) throws IOException {
         InputStream fileStream = null;
-        InputStream gzipStream = null;
         Reader in = null;
 
         logger.debug("Reading file {}", filename);
