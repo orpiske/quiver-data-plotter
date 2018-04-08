@@ -38,7 +38,6 @@ public class DefaultSnapshotProcessorTest {
         assertEquals(87.816, rssValues.get(10), 0.0001);
         assertEquals(88.604, rssValues.get(12), 0.0001);
         assertEquals(89.768, snapshotData.getRssMax(), 0.0001);
-        rssValues.forEach(System.out::println);
         assertEquals(0.0, snapshotData.getRssMin(), 0.0000);
 
         assertEquals(0.0, snapshotData.getRssGeometricMean(), 0.0000);
