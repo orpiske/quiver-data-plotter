@@ -16,6 +16,7 @@
 
 package net.orpiske.qdp.plot.exceptions;
 
+@SuppressWarnings("serial")
 public class EmptyDataSet extends Exception {
     public EmptyDataSet() {
         super();
@@ -36,4 +37,5 @@ public class EmptyDataSet extends Exception {
     protected EmptyDataSet(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
 }
