@@ -20,6 +20,6 @@ set QDP_HOME=%~dp0\..
 if %OS%=="Windows_NT" @setlocal
 if %OS%=="WINNT" @setlocal
 
-for %%i in ("%QDP_HOME%"\bin\qdp-data-*) do set QDP_JAR="%%i"
+for %%i in ("%QDP_HOME%"\bin\quiver-*) do set QDP_JAR="%%i"
 
 @java -classpath %QDP_JAR% net.orpiske.qdp.main.Main %*

@@ -47,4 +47,4 @@ fi
 
 mainclass=net.orpiske.qdp.main.Main
 
-java -classpath "$installdir"/bin/qdp-data-*.jar "$mainclass" $@
+java -classpath "$installdir"/bin/quiver-*.jar "$mainclass" $@
