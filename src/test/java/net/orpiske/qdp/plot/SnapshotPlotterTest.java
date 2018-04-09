@@ -20,7 +20,6 @@ public class SnapshotPlotterTest {
 
     private void doSenderPlot(String fileName) throws IOException, EmptyDataSet {
         DefaultSnapshotProcessor processor = new DefaultSnapshotProcessor();
-        // processor.getSnapshotData().set
 
         SnapshotReader reader = new SnapshotReader(processor);
 
