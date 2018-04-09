@@ -1,7 +1,7 @@
 package net.orpiske.qdp.plot;
 
 public class ChartProperties {
-    private String title = "Rate distribution over time";
+    private String title = "";
     private String seriesName = "Throughput rate";
     private String xTitle = "";
     private String yTitle = "Messages p/ second";

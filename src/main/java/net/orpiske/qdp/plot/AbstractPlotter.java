@@ -1,10 +1,15 @@
 package net.orpiske.qdp.plot;
 
 import net.orpiske.qdp.plot.exceptions.EmptyDataSet;
+import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.knowm.xchart.style.colors.ChartColor;
+import org.knowm.xchart.style.colors.XChartSeriesColors;
+import org.knowm.xchart.style.lines.SeriesLines;
+import org.knowm.xchart.style.markers.SeriesMarkers;
 
 import java.awt.*;
 import java.io.IOException;
@@ -14,7 +19,7 @@ import java.util.List;
 /**
  * Base class for plotters
  */
-public abstract class AbstractPlotter {
+public abstract class AbstractPlotter<T> {
     private int outputWidth = 1200;
     private int outputHeight = 700;
     private boolean plotGridLinesVisible = true;
@@ -128,12 +133,35 @@ public abstract class AbstractPlotter {
         return chart;
     }
 
+    protected void plotCommon(final List<Date> xData, final List<? extends Number> yData, final String outputFileName)
+            throws IOException, EmptyDataSet {
+        if (xData == null || xData.size() == 0) {
+            throw new EmptyDataSet("The 'X' column data set is empty");
+        }
+
+        if (yData == null || yData.size() == 0) {
+            throw new EmptyDataSet("The 'Y' column data set is empty");
+        }
+
+        // Create Chart
+        XYChart chart = buildCommonChart();
+
+        // Series
+        XYSeries series = chart.addSeries(getChartProperties().getSeriesName(), xData, yData);
+
+        series.setLineColor(XChartSeriesColors.BLUE);
+        series.setMarkerColor(Color.LIGHT_GRAY);
+        series.setMarker(SeriesMarkers.NONE);
+        series.setLineStyle(SeriesLines.SOLID);
+
+        BitmapEncoder.saveBitmap(chart, outputFileName, BitmapEncoder.BitmapFormat.PNG);
+    }
+
     /**
      * Plots the data
-     * @param xData
-     * @param yData
+     * @param data Quiver performance data
      * @throws IOException
      * @throws EmptyDataSet
      */
-    abstract public void plot(final List<Date> xData, final List<? extends Number> yData) throws IOException, EmptyDataSet;
+    abstract public void plot(final T data) throws IOException, EmptyDataSet;
 }
