@@ -11,6 +11,7 @@ public class SnapshotInfo implements Comparable<SnapshotInfo> {
     private double rate;
     private double cpu;
     private double rss;
+    private double latency;
 
     public Instant getTimestamp() {
         return timestamp;
@@ -52,6 +53,14 @@ public class SnapshotInfo implements Comparable<SnapshotInfo> {
         this.rss = rss;
     }
 
+    public double getLatency() {
+        return latency;
+    }
+
+    public void setLatency(double latency) {
+        this.latency = latency;
+    }
+
     @Override
     public String toString() {
         return "SnapshotInfo{" +
@@ -60,6 +69,7 @@ public class SnapshotInfo implements Comparable<SnapshotInfo> {
                 ", rate=" + rate +
                 ", cpu=" + cpu +
                 ", rss=" + rss +
+                ", latency=" + latency +
                 '}';
     }
 

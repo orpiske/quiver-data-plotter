@@ -56,10 +56,20 @@ public class SnapshotPlotter extends AbstractPlotter<SnapshotData> {
         plotCommon(xData, yData, baseName + "_rss.png");
     }
 
+    protected void plotLatency(final List<Date> xData, final List<? extends Number> yData) throws IOException, EmptyDataSet {
+        updateChart("Latency distribution over time", "Latency", "", "Milliseconds");
+
+        plotCommon(xData, yData, baseName + "_latency.png");
+    }
+
     @Override
     public void plot(SnapshotData data) throws IOException, EmptyDataSet {
         plotSnapshot(data.getRatePeriods(), data.getRateValues());
         plotCpu(data.getRatePeriods(), data.getCpuValues());
         plotRss(data.getRatePeriods(), data.getRssValues());
+
+        if (baseName.contains("receiver")) {
+            plotLatency(data.getRatePeriods(), data.getLatencyValues());
+        }
     }
 }

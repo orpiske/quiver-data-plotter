@@ -60,6 +60,8 @@ public class DefaultSnapshotProcessor implements SnapshotProcessor {
         double convertedRss = Double.parseDouble(rss);
         snapshotInfo.setRss(convertedRss / (1000.0d * 1024.0d));
 
+        snapshotInfo.setLatency(Double.parseDouble(latency));
+
         snapshotData.add(snapshotInfo);
     }
 }

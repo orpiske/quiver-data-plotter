@@ -22,6 +22,8 @@ package net.orpiske.qdp.plot;
 @FunctionalInterface
 public interface SnapshotProcessor {
 
+
+
     /**
      *
      * @param timestamp record timestamp

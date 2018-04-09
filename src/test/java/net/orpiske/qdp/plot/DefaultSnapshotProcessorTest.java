@@ -64,10 +64,19 @@ public class DefaultSnapshotProcessorTest {
         assertEquals(39.48025987, cpuValues.get(17), 0.0001);
         assertEquals(59.440559441, cpuValues.get(9), 0.0001);
 
-
         List<Double> rssValues = snapshotData.getRssValues();
         assertEquals(80.432, rssValues.get(10), 0.0001);
         assertEquals(80.432, rssValues.get(12), 0.0001);
+
+        List<Double> latencies = snapshotData.getLatencyValues();
+//        latencies.forEach(System.out::println);
+
+        assertEquals(351354.0, snapshotData.getLatencyPercentileAt(100), 0.0000);
+
+        assertEquals(260, snapshotData.getLatencyPercentileAt(90.0), 0.0000);
+        assertEquals(22.0, snapshotData.getLatencyPercentileAt(80.0), 0.0000);
+        assertEquals(20.0, snapshotData.getLatencyPercentileAt(50.0), 0.0000);
+
     }
 
     @Test

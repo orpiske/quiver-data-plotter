@@ -17,6 +17,7 @@
 package net.orpiske.qdp.plot;
 
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import java.util.*;
@@ -28,10 +29,11 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("unused")
 public class SnapshotData {
-    private Set<SnapshotInfo> snapshotInfos = new TreeSet<SnapshotInfo>();
+    private Set<SnapshotInfo> snapshotInfos = new TreeSet<>();
     private SummaryStatistics rateStatistics;
     private SummaryStatistics cpuStatistics;
     private SummaryStatistics rssStatistics;
+    private DescriptiveStatistics latencyStatistics;
     private long errorCount;
     private long skipCount = 0;
     private boolean strict = true;
@@ -79,22 +81,6 @@ public class SnapshotData {
                     .forEach(rateValue);
         }
 
-    }
-
-    public List<Double> getCpuValues() {
-        return snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu).boxed().collect(Collectors.toList());
-    }
-
-    private void processCpuValues(DoubleConsumer cpuValue) {
-        if (strict) {
-            snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu)
-                    .forEach(cpuValue);
-        }
-        else {
-            snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu)
-                    .filter(value -> value > 0)
-                    .forEach(cpuValue);
-        }
     }
 
     public List<Double> getRssValues() {
@@ -145,6 +131,22 @@ public class SnapshotData {
         prepareRateStatistics();
 
         return rateStatistics.getStandardDeviation();
+    }
+
+    public List<Double> getCpuValues() {
+        return snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu).boxed().collect(Collectors.toList());
+    }
+
+    private void processCpuValues(DoubleConsumer cpuValue) {
+        if (strict) {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu)
+                    .forEach(cpuValue);
+        }
+        else {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getCpu)
+                    .filter(value -> value > 0)
+                    .forEach(cpuValue);
+        }
     }
 
     private void prepareCpuStatistics() {
@@ -213,6 +215,63 @@ public class SnapshotData {
         prepareRssStatistics();
 
         return rssStatistics.getStandardDeviation();
+    }
+
+    private void processLatencyValues(DoubleConsumer latencyValue) {
+        if (strict) {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getLatency)
+                    .forEach(latencyValue);
+
+        }
+        else {
+            snapshotInfos.stream().mapToDouble(SnapshotInfo::getLatency)
+                    .filter(value -> value > 0)
+                    .forEach(latencyValue);
+        }
+    }
+
+    private void prepareLatencyStatistics() {
+        if (latencyStatistics == null) {
+            // Use Summary Statistics because the data set might be too large
+            // and we don't want to abuse memory usage
+            latencyStatistics = new DescriptiveStatistics();
+            processLatencyValues(latencyStatistics::addValue);
+        }
+    }
+
+    public List<Double> getLatencyValues() {
+        return snapshotInfos.stream().mapToDouble(SnapshotInfo::getLatency).boxed().collect(Collectors.toList());
+    }
+
+
+    public double getLatencyGeometricMean() {
+        prepareLatencyStatistics();
+
+        return latencyStatistics.getGeometricMean();
+    }
+
+    public double getLatencyMax() {
+        prepareLatencyStatistics();
+
+        return latencyStatistics.getMax();
+    }
+
+    public double getLatencyMin() {
+        prepareLatencyStatistics();
+
+        return latencyStatistics.getMin();
+    }
+
+    public double getLatencyStandardDeviation() {
+        prepareLatencyStatistics();
+
+        return latencyStatistics.getStandardDeviation();
+    }
+
+    public double getLatencyPercentileAt(double percentile) {
+        prepareLatencyStatistics();
+
+        return latencyStatistics.getPercentile(percentile);
     }
 
     public int getNumberOfSamples() {
