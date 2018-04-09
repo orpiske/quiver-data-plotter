@@ -29,13 +29,13 @@ public class QuiverPropertyWriterTest {
     public void testSenderPlotter() throws IOException, EmptyDataSet {
         String fileName = this.getClass().getResource("sender-snapshots.csv").getPath();
 
-        checkProperties(fileName, "quiver-sender.properties");
+        checkProperties(fileName, "sender-snapshots.properties");
     }
 
     @Test
     public void testReceiverPlotter() throws IOException, EmptyDataSet {
         String fileName = this.getClass().getResource("receiver-snapshots.csv").getPath();
 
-        checkProperties(fileName, "quiver-receiver.properties");
+        checkProperties(fileName, "sender-snapshots.properties");
     }
 }
