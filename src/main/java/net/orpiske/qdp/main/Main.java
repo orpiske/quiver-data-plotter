@@ -23,6 +23,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Properties;
 
 public class Main {
@@ -179,6 +180,10 @@ public class Main {
     public static void main(String[] args) {
         processCommand(args);
         try {
+            QuiverReportWalker reportWalker = new QuiverReportWalker();
+
+            reportWalker.walk(new File(directory));
+
             System.exit(0);
         } catch (Exception e) {
             e.printStackTrace();

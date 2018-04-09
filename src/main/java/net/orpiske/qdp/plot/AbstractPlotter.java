@@ -12,6 +12,7 @@ import org.knowm.xchart.style.lines.SeriesLines;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -133,7 +134,7 @@ public abstract class AbstractPlotter<T> {
         return chart;
     }
 
-    protected void plotCommon(final List<Date> xData, final List<? extends Number> yData, final String outputFileName)
+    protected void plotCommon(final List<Date> xData, final List<? extends Number> yData, final File outputFile)
             throws IOException, EmptyDataSet {
         if (xData == null || xData.size() == 0) {
             throw new EmptyDataSet("The 'X' column data set is empty");
@@ -154,7 +155,7 @@ public abstract class AbstractPlotter<T> {
         series.setMarker(SeriesMarkers.NONE);
         series.setLineStyle(SeriesLines.SOLID);
 
-        BitmapEncoder.saveBitmap(chart, outputFileName, BitmapEncoder.BitmapFormat.PNG);
+        BitmapEncoder.saveBitmap(chart, outputFile.getPath(), BitmapEncoder.BitmapFormat.PNG);
     }
 
     /**

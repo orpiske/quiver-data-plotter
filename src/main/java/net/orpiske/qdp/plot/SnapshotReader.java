@@ -21,8 +21,7 @@ public class SnapshotReader {
         logger.debug("Reading records using the default rate reader");
     }
 
-
-    public void read(final String filename) throws IOException {
+    public void read(final File filename) throws IOException {
         InputStream fileStream = null;
         Reader in = null;
 
@@ -49,5 +48,9 @@ public class SnapshotReader {
             IOUtils.closeQuietly(in);
             IOUtils.closeQuietly(fileStream);
         }
+    }
+
+    public void read(final String filename) throws IOException {
+        read(new File(filename));
     }
 }

@@ -18,7 +18,7 @@ public class SnapshotPlotterTest {
         assertTrue("Missing output file: " + plottedFile, plottedFile.exists());
     }
 
-    private void doSenderPlot(String fileName) throws IOException, EmptyDataSet {
+    private void doSenderPlot(File fileName) throws IOException, EmptyDataSet {
         DefaultSnapshotProcessor processor = new DefaultSnapshotProcessor();
 
         SnapshotReader reader = new SnapshotReader(processor);
@@ -27,27 +27,27 @@ public class SnapshotPlotterTest {
 
         SnapshotData snapshotData = processor.getSnapshotData();
 
-        String baseName = FilenameUtils.removeExtension(fileName);
-        SnapshotPlotter snapshotPlotter = new SnapshotPlotter(baseName);
+        String baseName = FilenameUtils.removeExtension(fileName.getName());
+        SnapshotPlotter snapshotPlotter = new SnapshotPlotter(fileName.getParentFile(), baseName);
 
         snapshotPlotter.plot(snapshotData);
 
-        checkPlottedFile(fileName, "_snapshots.png");
-        checkPlottedFile(fileName, "_cpu.png");
-        checkPlottedFile(fileName, "_rss.png");
+        checkPlottedFile(baseName, "_snapshots.png");
+        checkPlottedFile(baseName, "_cpu.png");
+        checkPlottedFile(baseName, "_rss.png");
     }
 
     @Test
     public void testSenderPlotter() throws IOException, EmptyDataSet {
         String fileName = this.getClass().getResource("sender-snapshots.csv").getPath();
 
-        doSenderPlot(fileName);
+        doSenderPlot(new File(fileName));
     }
 
     @Test
     public void testReceiverPlotter() throws IOException, EmptyDataSet {
         String fileName = this.getClass().getResource("receiver-snapshots.csv").getPath();
 
-        doSenderPlot(fileName);
+        doSenderPlot(new File(fileName));
     }
 }
