@@ -17,18 +17,22 @@
 package net.orpiske.qdp.main;
 
 
+import net.orpiske.qdp.plot.renderer.IndexRenderer;
+import net.orpiske.qdp.plot.renderer.PropertyUtils;
 import net.orpiske.qdp.utils.Constants;
 import org.apache.commons.cli.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
-
     private static CommandLine cmdLine;
 
     private static String directory;
@@ -182,7 +186,16 @@ public class Main {
         try {
             QuiverReportWalker reportWalker = new QuiverReportWalker();
 
-            reportWalker.walk(new File(directory));
+            File outputDirectory = new File(directory);
+
+            reportWalker.walk(outputDirectory);
+
+            IndexRenderer indexRenderer = new IndexRenderer();
+            renderSenderPage(indexRenderer, outputDirectory);
+            renderReceiverPage(indexRenderer, outputDirectory);
+            renderIndexPage(indexRenderer, outputDirectory);
+
+            indexRenderer.copyResources(outputDirectory);
 
             System.exit(0);
         } catch (Exception e) {
@@ -193,5 +206,32 @@ public class Main {
         System.exit(1);
     }
 
+    private static void renderSenderPage(IndexRenderer indexRenderer, File outputDirectory) throws Exception {
+        File outFile = new File(outputDirectory, "sender.html");
 
+        Map<String, Object> context = new HashMap<>();
+        PropertyUtils.loadProperties(new File(outputDirectory, "sender-snapshots.properties"), context);
+
+        FileUtils.writeStringToFile(outFile, indexRenderer.render("/report/sender.html", context),
+                StandardCharsets.UTF_8);
+    }
+
+    private static void renderReceiverPage(IndexRenderer indexRenderer, File outputDirectory) throws Exception {
+        File outFile = new File(outputDirectory, "receiver.html");
+
+        Map<String, Object> context = new HashMap<>();
+        PropertyUtils.loadProperties(new File(outputDirectory, "receiver-snapshots.properties"), context);
+
+        FileUtils.writeStringToFile(outFile, indexRenderer.render("/report/receiver.html", context),
+                StandardCharsets.UTF_8);
+    }
+
+    private static void renderIndexPage(IndexRenderer indexRenderer, File outputDirectory) throws Exception {
+        File outFile = new File(outputDirectory, "index.html");
+
+        Map<String, Object> context = new HashMap<>();
+
+        FileUtils.writeStringToFile(outFile, indexRenderer.render("/report/index.html", context),
+                StandardCharsets.UTF_8);
+    }
 }

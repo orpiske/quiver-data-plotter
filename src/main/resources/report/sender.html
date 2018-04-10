@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+  ~  Copyright 2017 Otavio R. Piske <angusyoung@gmail.com>
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Messaging Performance Reports</title>
+
+    <link rel="stylesheet" href="./assets/css/patternfly.min.css">
+    <link rel="stylesheet" href="./assets/css/patternfly-additions.min.css">
+
+    <link rel="icon"
+          type="image/png"
+          href="favicon.png">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default navbar-pf" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://github.com/ssorj/quiver">
+                <img src="./" alt="Quiver Performance Report" />
+            </a>
+        </div>
+
+    </nav>
+
+    <main>
+        <header>
+           <h1>Quiver Performance Report</h1>
+        </header>
+
+        <div class="col-sm-12">
+            <div class="col-md-8 col-lg-12">
+                <div class="row">
+                    <div>
+                        <h2 id="rate">Reports</h2>
+
+                        <h3 id="rate-distribution">Rate</h3>
+                        <img class="img-responsive" src="sender-snapshots_rate.png" />
+
+                        <h3 id="cpu-distribution">CPU Usage</h3>
+                        <img class="img-responsive" src="sender-snapshots_cpu.png" />
+
+                        <h3 id="rss-distribution">RSS Usage</h3>
+                        <img class="img-responsive" src="sender-snapshots_rss.png" />
+
+                        <h2 id="rate-summary">Summary</h2>
+                        <table class="table table-striped table-bordered table-hover" id="latency-table">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Maximum Rate</td>
+                                    <td>{{ quiverRateMax | round(6) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Geometric Mean</td>
+                                    <td>{{ quiverRateGeometricMean | round(6) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Standard Deviation</td>
+                                    <td>{{ quiverRateStandardDeviation | round(6) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Maximum Cpu</td>
+                                    <td>{{ quiverCpuMax | round(6) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Minimum Cpu</td>
+                                    <td>{{ quiverCpuMin | round(6) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Geometric Mean</td>
+                                    <td>{{ quiverCpuGeometricMean | round(6) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Standard Deviation</td>
+                                    <td>{{ quiverCpuStandardDeviation | round(6) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Maximum Rss</td>
+                                    <td>{{ quiverRssMax | round(6) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Minimum Rss</td>
+                                    <td>{{ quiverRssMin | round(6) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Geometric Mean</td>
+                                    <td>{{ quiverRssGeometricMean | round(6) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Standard Deviation</td>
+                                    <td>{{ quiverRssStandardDeviation | round(6) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Samples</td>
+                                    <td>{{ quiverSamples | round(0) }}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>Error Count</td>
+                                    <td>{{ quiverErrorCount}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Skipped Records</td>
+                                    <td>{{ quiverSkipCount }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <p>
+                            You can <strong>download</strong> the source files for these images here:<br>
+                            <a href="./sender-snapshots.csv" class="btn btn-default" role="button">Rate CSV</a>
+                            <a href="./sender-summary.json" class="btn btn-default" role="button">Json Summary</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script type="text/javascript" src="assets/components/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/patternfly.min.js"></script>
+</body>
+</html>
