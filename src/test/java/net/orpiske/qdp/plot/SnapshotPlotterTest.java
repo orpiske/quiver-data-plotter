@@ -11,10 +11,10 @@ import static org.junit.Assert.assertTrue;
 
 public class SnapshotPlotterTest {
 
-    private void checkPlottedFile(final String fileName, final String last) {
+    private void checkPlottedFile(final File path, final String fileName, final String last) {
         String plottedFileName = FilenameUtils.removeExtension(FilenameUtils.removeExtension(fileName)) + last;
 
-        File plottedFile = new File(plottedFileName);
+        File plottedFile = new File(path, plottedFileName);
         assertTrue("Missing output file: " + plottedFile, plottedFile.exists());
     }
 
@@ -32,9 +32,9 @@ public class SnapshotPlotterTest {
 
         snapshotPlotter.plot(snapshotData);
 
-        checkPlottedFile(baseName, "_snapshots.png");
-        checkPlottedFile(baseName, "_cpu.png");
-        checkPlottedFile(baseName, "_rss.png");
+        checkPlottedFile(fileName.getParentFile(), baseName, "_rate.png");
+        checkPlottedFile(fileName.getParentFile(), baseName, "_cpu.png");
+        checkPlottedFile(fileName.getParentFile(), baseName, "_rss.png");
     }
 
     @Test

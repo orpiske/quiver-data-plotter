@@ -44,7 +44,7 @@ public class SnapshotPlotter extends AbstractPlotter<SnapshotData> {
     protected void plotSnapshot(final List<Date> xData, final List<? extends Number> yData) throws IOException, EmptyDataSet {
         updateChart("Rate distribution over time", "Throughput rate", "", "Messages p/ second");
 
-        File outputFile = new File(outputDir, baseName + "_snapshots.png");
+        File outputFile = new File(outputDir, baseName + "_rate.png");
 
         plotCommon(xData, yData, outputFile);
     }
