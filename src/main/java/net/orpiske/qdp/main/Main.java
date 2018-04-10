@@ -181,17 +181,20 @@ public class Main {
     public static void main(String[] args) {
         processCommand(args);
         try {
+            // Create a walker for the directory where the Quiver files are
             QuiverReportWalker reportWalker = new QuiverReportWalker();
 
+            // Traverse the directory processing the files and plotting them
             File outputDirectory = new File(directory);
-
             reportWalker.walk(outputDirectory);
 
+            // Generate the HTML reports for the files
             IndexRenderer indexRenderer = new IndexRenderer();
             renderSenderPage(indexRenderer, outputDirectory);
             renderReceiverPage(indexRenderer, outputDirectory);
             renderIndexPage(indexRenderer, outputDirectory);
 
+            // Copy the common assets
             indexRenderer.copyResources(outputDirectory);
 
             System.exit(0);
