@@ -20,7 +20,7 @@
 
     <groupId>net.orpiske</groupId>
     <artifactId>quiver-data-plotter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,7 +29,7 @@
     <scm>
         <developerConnection>scm:git:git@github.com:orpiske/quiver-data-plotter.git</developerConnection>
         <url>https://github.com/orpiske/quiver-data-plotter</url>
-        <tag>quiver-data-plotter-1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
