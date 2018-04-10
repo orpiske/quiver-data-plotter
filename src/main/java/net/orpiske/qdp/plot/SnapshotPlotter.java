@@ -42,7 +42,7 @@ public class SnapshotPlotter extends AbstractPlotter<SnapshotData> {
     }
 
     protected void plotSnapshot(final List<Date> xData, final List<? extends Number> yData) throws IOException, EmptyDataSet {
-        updateChart("Rate distribution over time", "Throughput rate", "", "Messages p/ second");
+        updateChart("", "Throughput rate", "", "Messages p/ second");
 
         File outputFile = new File(outputDir, baseName + "_rate.png");
 
@@ -50,21 +50,21 @@ public class SnapshotPlotter extends AbstractPlotter<SnapshotData> {
     }
 
     protected void plotCpu(final List<Date> xData, final List<? extends Number> yData) throws IOException, EmptyDataSet {
-        updateChart("CPU utilization over time", "CPU", "", "Utilization (in %)");
+        updateChart("", "CPU", "", "Utilization (in %)");
 
         File outputFile = new File(outputDir, baseName + "_cpu.png");
         plotCommon(xData, yData, outputFile);
     }
 
     protected void plotRss(final List<Date> xData, final List<? extends Number> yData) throws IOException, EmptyDataSet {
-        updateChart("RSS utilization over time", "Memory", "", "Megabytes");
+        updateChart("", "Memory", "", "Megabytes");
 
         File outputFile = new File(outputDir, baseName + "_rss.png");
         plotCommon(xData, yData, outputFile);
     }
 
     protected void plotLatency(final List<Date> xData, final List<? extends Number> yData) throws IOException, EmptyDataSet {
-        updateChart("Latency distribution over time", "Latency", "", "Milliseconds");
+        updateChart("", "Latency", "", "Milliseconds");
 
         File outputFile = new File(outputDir, baseName + "_latency.png");
         plotCommon(xData, yData, outputFile);
