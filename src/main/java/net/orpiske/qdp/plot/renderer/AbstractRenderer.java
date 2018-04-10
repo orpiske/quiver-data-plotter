@@ -21,7 +21,6 @@ import com.hubspot.jinjava.Jinjava;
 import com.hubspot.jinjava.JinjavaConfig;
 import com.hubspot.jinjava.loader.CascadingResourceLocator;
 import com.hubspot.jinjava.loader.FileLocator;
-import net.orpiske.qdp.plot.renderer.custom.FileExists;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +41,6 @@ public abstract class AbstractRenderer {
         JinjavaConfig config = new JinjavaConfig();
 
         jinjava = new Jinjava(config);
-        jinjava.getGlobalContext().registerFilter(new FileExists());
 
         setupResourceLocator();
     }
